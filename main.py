@@ -9,7 +9,9 @@ import json
 import os
 html = '<html><body><h3>Hello Alexander Yurevich</h3><img src="mashikhin.jpg"/></body></html>'
 
-
+def cpu_temp():
+    pt = psutil.cpu_percent()
+    return pt
 def disk_space():
     st = psutil.disk_usage(".")
     return st.free, st.total
@@ -38,7 +40,7 @@ class ServerHandler(BaseHTTPRequestHandler):
             self.send_response(200)
             self.send_header('Content-Type', 'application/json')
             self.end_headers()
-            health = {'CPULoad': cpu_load(), "DiskFree": disk_space()[0], "DiskTotal": disk_space()[1], "RAMUse": ram_usage()}
+            health = {'CPUTemp':cpu_temp(),'CPULoad': cpu_load(), "DiskFree": disk_space()[0], "DiskTotal": disk_space()[1], "RAMUse": ram_usage()}
             self.wfile.write(json.dumps(health).encode('utf-8'))
 
         else:
